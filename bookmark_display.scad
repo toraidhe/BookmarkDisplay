@@ -43,39 +43,54 @@ module slot_cutout(w, t, h) {
 module main_fixture() {
     difference() {
         union() {
-            // Main base block covering the entire footprint
-            cube([total_width, total_depth, display_height]);
+            // 1. The main display block (high part at the back)
+            translate([0, total_depth - display_block_depth, 0])
+            cube([total_width, display_block_depth, display_height]);
+            
+            // 2. The storage tray base (lower part at the front)
+            cube([total_width, total_depth - display_block_depth, storage_wall_h + wall_thickness]);
+            
+            // 3. Side walls to contain the flat bookmarks
+            for (x_offset = [0, total_width - wall_thickness]) {
+                translate([x_offset, 0, 0])
+                cube([wall_thickness, total_depth - display_block_depth, display_height]);
+            }
+            
+            // 4. Front retaining wall for the flat storage
+            cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);
         }
         
-        // 1. Display Slots (at the very back)
+        // A. Display Slots (Slanted) - These sit in the high display block
         for (i = [0 : number_of_slots - 1]) {
             x_pos = wall_thickness + i * (bookmark_width + slot_spacing);
-            y_pos = total_depth - display_block_depth;
+            // Position the slot comfortably within the display block
+            y_pos = total_depth - (display_block_depth / 2);
             
-            translate([x_pos, y_pos + (display_block_depth/2), wall_thickness * 2])
+            translate([x_pos, y_pos, wall_thickness * 2])
             rotate([-tilt_angle, 0, 0])
             slot_cutout(bookmark_width, bookmark_thickness, 210);
         }
         
-        // 2. Flat Storage Trays (Frontal Area)
+        // B. Flat Storage Recesses
         for (i = [0 : number_of_slots - 1]) {
             x_pos = wall_thickness + i * (bookmark_width + slot_spacing);
             
-            // Recess the storage area so bookmarks lie flat
-            // The depth is now significant to allow them to lie flat lengthwise
+            // Cut out the tray area so bookmarks can lie flat
             translate([x_pos, wall_thickness, wall_thickness])
-            cube([bookmark_width, storage_depth + (total_depth - storage_depth - display_block_depth - wall_thickness), display_height - wall_thickness + 1]);
+            cube([bookmark_width, total_depth - display_block_depth - wall_thickness, display_height]);
         }
         
-        // 3. Front Wall Height Trim
-        // This lowers the front of the block to the 'storage_wall_h'
-        translate([-1, -1, storage_wall_h])
-        cube([total_width + 2, storage_depth + wall_thickness, display_height]);
-        
-        // 4. Aesthetic Slope transition from front wall to back display
-        translate([-1, storage_depth + wall_thickness, storage_wall_h])
-        rotate([-15, 0, 0])
-        cube([total_width + 2, 30, display_height]);
+        // C. Aesthetic Slope (transition side walls down to front wall)
+        for (x_offset = [-1, total_width - wall_thickness-1]) {
+            translate([x_offset, 0, storage_wall_h + wall_thickness])
+            rotate([0, 90, 0])
+            linear_extrude(wall_thickness + 2)
+            polygon([
+                [0, 0],
+                [0, total_depth - display_block_depth],
+                [display_height - (storage_wall_h + wall_thickness), total_depth - display_block_depth]
+            ]);
+        }
     }
 }
 
