@@ -5,21 +5,21 @@
 // Width of each slot (fits bookmarks up to 56mm with clearance)
 bookmark_width = 60;
 // Maximum height of your bookmarks (used for tray depth)
-bookmark_height = 200;
+bookmark_height = 220;
 // Thickness of the bookmark (plus a little wiggle room)
-bookmark_thickness = 2.4;
+bookmark_thickness = 1.6;
 // Number of categories/slots side-by-side
 number_of_slots = 3; // Reduced default to fit standard 3D print beds
 
 /* [Display Configuration] */
 // Gap between categories
-slot_spacing = 8;
+slot_spacing = 2;
 // Degrees to lean the display bookmark back
 tilt_angle = 15;
 
 /* [Storage Bin Settings] */
 // Storage tray depth matches bookmark height
-storage_depth = bookmark_height; 
+storage_depth = bookmark_height;
 // Height of the front retaining wall for storage
 storage_wall_h = 8;
 
@@ -101,14 +101,17 @@ module main() {
   main_fixture();
 }
 
-main();
+// Include guard: only render when this is the top-level file
+if (is_undef(__BOOKMARK_LID__)) {
+  main();
 
-// Verification Echoes for 3D Printing
-echo(str("Total Width: ", total_width, "mm"));
-echo(str("Total Depth: ", total_depth, "mm"));
-echo(str("Max Height: ", display_height, "mm"));
+  // Verification Echoes for 3D Printing
+  echo(str("Total Width: ", total_width, "mm"));
+  echo(str("Total Depth: ", total_depth, "mm"));
+  echo(str("Max Height: ", display_height, "mm"));
 
-// Warning if dimensions exceed standard print beds
-if (total_width > 220 || total_depth > 220) {
-  echo("WARNING: Stand dimensions may exceed standard 220x220mm print beds.");
+  // Warning if dimensions exceed standard print beds
+  if (total_width > 220 || total_depth > 220) {
+    echo("WARNING: Stand dimensions may exceed standard 220x220mm print beds.");
+  }
 }
