@@ -29,7 +29,7 @@ wall_thickness = 2.4;
 // Depth of the rear block holding the display bookmark
 display_block_depth = 20;
 // Height of the display block
-display_height = 25;
+display_height = 40;
 
 /* [Internal Calculations] */
 // Width of internal separator walls (absorbs slot_spacing so storage bins = bookmark_width)
@@ -73,8 +73,34 @@ module main_fixture() {
       }
     }
 
-    // 2. The front storage floor
-    cube([total_width, total_depth - display_block_depth, wall_thickness]);
+    // 2. The front storage floor with V-groove centering
+    union() {
+      // Solid base floor
+      cube([total_width, total_depth - display_block_depth, wall_thickness]);
+
+      // V-shaped wedges for each compartment to self-center the bookmarks
+      v_h = 2; // Height of the V slope
+      v_d = total_depth - display_block_depth - wall_thickness;
+      for (i = [0:number_of_slots - 1]) {
+        x_start = wall_thickness + i * slot_pitch;
+        x_center = x_start + bookmark_width / 2;
+
+        // Left slope
+        translate([x_start, wall_thickness, wall_thickness])
+          hull() {
+            cube([0.1, v_d, v_h]);
+            translate([bookmark_width / 2, 0, 0])
+              cube([0.1, v_d, 0.1]);
+          }
+        // Right slope
+        translate([x_center, wall_thickness, wall_thickness])
+          hull() {
+            cube([0.1, v_d, 0.1]);
+            translate([bookmark_width / 2 - 0.1, 0, 0])
+              cube([0.1, v_d, v_h]);
+          }
+      }
+    }
 
     // 3. Front retaining wall
     cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);

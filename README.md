@@ -4,7 +4,8 @@ A parametric OpenSCAD project for displaying and storing bookmarks. This system 
 
 ## 🚀 Key Features
 
-- **High-Capacity Storage**: Dedicated tray for storing up to **50 bookmarks** flat per category.
+- **Reinforced Support**: Display height increased to **40mm** for superior bookmark stability.
+- **Self-Centering Storage**: V-groove floor in the storage tray automatically aligns bookmark stacks.
 - **Parametric Synchronization**: All components (Base, Lid, and Test Utility) share a single source of truth for dimensions.
 - **Aesthetic "Block" Design**: When the lid is closed, the unit forms a clean, rectangular cube that hides the internal sloped geometry.
 - **Anti-Rattle Dividers**: The lid includes internal spacers that match the box slope to keep bookmarks secure during transport.
@@ -24,9 +25,11 @@ A parametric OpenSCAD project for displaying and storing bookmarks. This system 
 ### 1. Customizing the Design
 
 Open [**`bookmark_display.scad`**](./bookmark_display.scad) in OpenSCAD. This file houses all critical parameters:
+
 - `bookmark_width`: Width of your bookmark + clearance.
 - `bookmark_thickness`: Adjust based on your bookmark stack height.
 - `number_of_slots`: Define how many categories to display.
+- `display_height`: Currently set to **40mm** for optimal support.
 
 > [!TIP]
 > Changing values in the display file will automatically update the Lid and the Test Utility!
