@@ -19,11 +19,17 @@ stl_scale = 1.0;
 // Opacity of the display box (0.0 to 1.0)
 box_opacity = 0.5; // [0:0.1:1.0]
 // Show the lid?
-show_lid = false;
+show_lid = true;
+// Lift the lid to see inside (0 for fully seated)
+lid_lift = 0; // [0:1:150]
 // Show a cross-section cut?
-cutaway = "none"; // [none, half_x, half_y, front_slot]
+cutaway = "none"; // [none, half_x, half_y, front_slot, side_cut]
 
 /* [Internal Logic - Positioning] */
+// Align lid with box: box origin [0,0,0] is offset from lid origin
+box_offset_x = wall_thickness + lid_clearance;
+box_offset_y = wall_thickness + lid_clearance;
+
 // Helper to render the bookmark with current alignment
 module aligned_bookmark() {
   scale(stl_scale)
@@ -41,10 +47,8 @@ module visualization_wrapper() {
 
       // The Lid (optional)
       if (show_lid) {
-        // Ensure lid is included with guard
-        // (Guard is handled by __BOOKMARK_LID__ in bookmark_lid.scad)
         color("White", box_opacity)
-          translate([0, 0, 0]) // Adjust if you want it lifted
+          translate([-box_offset_x, -box_offset_y, lid_lift]) 
             lid();
       }
 
@@ -71,6 +75,10 @@ module visualization_wrapper() {
       // Cut away the front of the display block to see the slot engagement
       translate([-50, total_depth - display_block_depth, -50])
         cube([total_width + 100, display_block_depth, 200]);
+    } else if (cutaway == "side_cut") {
+      // Slice along X to see gap between lid walls and box side
+      translate([-50, -50, -50])
+        cube([total_width/2 + 50, total_depth+100, 200]);
     }
   }
 }
