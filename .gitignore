@@ -1,0 +1,20 @@
+# OpenSCAD Generated Files
+*.stl
+*.obj
+*.off
+*.amf
+*.3mf
+*.png
+*.dxf
+*.svg
+*.csg
+*.echo
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Temp files
+*~
+*.swp
+*.tmp
