@@ -40,56 +40,56 @@ module slot_cutout(w, t, h) {
     cube([w, t, h + 2]);
 }
 
+module side_wall() {
+    // Elegant sloped side wall using hull to avoid subtractive holes
+    hull() {
+        // Front pillar
+        cube([wall_thickness, wall_thickness, storage_wall_h + wall_thickness]);
+        // Back pillar
+        translate([0, total_depth - display_block_depth, 0])
+        cube([wall_thickness, display_block_depth, display_height]);
+    }
+}
+
 module main_fixture() {
-    difference() {
-        union() {
-            // 1. The main display block (high part at the back)
+    union() {
+        // 1. The rear display block (solid)
+        difference() {
             translate([0, total_depth - display_block_depth, 0])
             cube([total_width, display_block_depth, display_height]);
             
-            // 2. The storage tray base (lower part at the front)
-            cube([total_width, total_depth - display_block_depth, storage_wall_h + wall_thickness]);
-            
-            // 3. Side walls to contain the flat bookmarks
-            for (x_offset = [0, total_width - wall_thickness]) {
-                translate([x_offset, 0, 0])
-                cube([wall_thickness, total_depth - display_block_depth, display_height]);
+            // Display Slots
+            for (i = [0 : number_of_slots - 1]) {
+                x_pos = wall_thickness + i * (bookmark_width + slot_spacing);
+                y_pos = (display_block_depth / 2);
+                
+                translate([x_pos, total_depth - display_block_depth + y_pos, wall_thickness * 2])
+                rotate([-tilt_angle, 0, 0])
+                slot_cutout(bookmark_width, bookmark_thickness, 210);
             }
-            
-            // 4. Front retaining wall for the flat storage
-            cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);
         }
         
-        // A. Display Slots (Slanted) - These sit in the high display block
-        for (i = [0 : number_of_slots - 1]) {
-            x_pos = wall_thickness + i * (bookmark_width + slot_spacing);
-            // Position the slot comfortably within the display block
-            y_pos = total_depth - (display_block_depth / 2);
-            
-            translate([x_pos, y_pos, wall_thickness * 2])
-            rotate([-tilt_angle, 0, 0])
-            slot_cutout(bookmark_width, bookmark_thickness, 210);
-        }
+        // 2. The front storage floor
+        cube([total_width, total_depth - display_block_depth, wall_thickness]);
         
-        // B. Flat Storage Recesses
-        for (i = [0 : number_of_slots - 1]) {
-            x_pos = wall_thickness + i * (bookmark_width + slot_spacing);
-            
-            // Cut out the tray area so bookmarks can lie flat
-            translate([x_pos, wall_thickness, wall_thickness])
-            cube([bookmark_width, total_depth - display_block_depth - wall_thickness, display_height]);
-        }
+        // 3. Front retaining wall
+        cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);
         
-        // C. Aesthetic Slope (transition side walls down to front wall)
-        for (x_offset = [-1, total_width - wall_thickness-1]) {
-            translate([x_offset, 0, storage_wall_h + wall_thickness])
-            rotate([0, 90, 0])
-            linear_extrude(wall_thickness + 2)
-            polygon([
-                [0, 0],
-                [0, total_depth - display_block_depth],
-                [display_height - (storage_wall_h + wall_thickness), total_depth - display_block_depth]
-            ]);
+        // 4. Solid Side Walls (Left and Right)
+        side_wall();
+        translate([total_width - wall_thickness, 0, 0])
+        side_wall();
+        
+        // 5. Internal separators (if multiple slots)
+        if (number_of_slots > 1) {
+            for (i = [1 : number_of_slots - 1]) {
+                x_pos = i * (bookmark_width + slot_spacing + wall_thickness);
+                // Adjusting to line up with the wall spacing
+                actual_x = wall_thickness + i * (bookmark_width + slot_spacing) - slot_spacing/2 - wall_thickness/2;
+                
+                translate([actual_x, 0, 0])
+                side_wall();
+            }
         }
     }
 }
