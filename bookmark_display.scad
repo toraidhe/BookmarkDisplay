@@ -29,7 +29,7 @@ wall_thickness = 2.4;
 // Depth of the rear block holding the display bookmark
 display_block_depth = 20;
 // Height of the display block
-display_height = 40;
+display_height = 36;
 
 /* [Internal Calculations] */
 // Width of internal separator walls (absorbs slot_spacing so storage bins = bookmark_width)
@@ -40,8 +40,18 @@ total_width = (2 * wall_thickness) + (number_of_slots * bookmark_width) + ( (num
 total_depth = display_block_depth + storage_depth + wall_thickness;
 
 module slot_cutout(w, t, h) {
-  translate([0, 0, -1])
-    cube([w, t, h + 2]);
+  v_depth = 5; // How deep the V-shape goes
+  translate([0, 0, -1]) {
+    union() {
+      // Main rectangular slot
+      cube([w, t, h + 2]);
+      // V-shaped bottom for self-centering
+      hull() {
+        translate([0, 0, 0]) cube([w, t, 0.1]);
+        translate([w/2, 0, -v_depth]) cube([0.1, t, 0.1]);
+      }
+    }
+  }
 }
 
 module side_wall(w = wall_thickness) {
@@ -67,43 +77,26 @@ module main_fixture() {
         x_pos = wall_thickness + i * slot_pitch;
         y_pos = (display_block_depth / 2);
 
-        translate([x_pos, total_depth - display_block_depth + y_pos, wall_thickness * 2])
+        translate([x_pos, total_depth - display_block_depth + y_pos, wall_thickness + 2])
           rotate([-tilt_angle, 0, 0])
             slot_cutout(bookmark_width, bookmark_thickness, 210);
       }
     }
 
-    // 2. The front storage floor with V-groove centering
+    // 2. The front storage floor (Flat)
+    cube([total_width, total_depth - display_block_depth, wall_thickness]);
+
+    // 3. Front retaining wall with retrieval fillet
     union() {
-      // Solid base floor
-      cube([total_width, total_depth - display_block_depth, wall_thickness]);
-
-      // V-shaped wedges for each compartment to self-center the bookmarks
-      v_h = 2; // Height of the V slope
-      v_d = total_depth - display_block_depth - wall_thickness;
-      for (i = [0:number_of_slots - 1]) {
-        x_start = wall_thickness + i * slot_pitch;
-        x_center = x_start + bookmark_width / 2;
-
-        // Left slope
-        translate([x_start, wall_thickness, wall_thickness])
-          hull() {
-            cube([0.1, v_d, v_h]);
-            translate([bookmark_width / 2, 0, 0])
-              cube([0.1, v_d, 0.1]);
-          }
-        // Right slope
-        translate([x_center, wall_thickness, wall_thickness])
-          hull() {
-            cube([0.1, v_d, 0.1]);
-            translate([bookmark_width / 2 - 0.1, 0, 0])
-              cube([0.1, v_d, v_h]);
-          }
-      }
+      // Main vertical wall
+      cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);
+      // Easy-Slide Retrieval Ramp
+      ramp_w = storage_wall_h; // Width of the ramp base
+      translate([0, wall_thickness, wall_thickness])
+        rotate([90, 0, 90])
+          linear_extrude(total_width)
+            polygon([[0,0], [ramp_w, 0], [0, storage_wall_h]]);
     }
-
-    // 3. Front retaining wall
-    cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);
 
     // 4. Solid Side Walls (Left and Right)
     side_wall();
