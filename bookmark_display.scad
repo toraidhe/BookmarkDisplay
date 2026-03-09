@@ -99,17 +99,19 @@ module main_fixture() {
       // Main vertical wall
       cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);
 
-      // Easy-Slide Retrieval Fillet (Concave Curve)
-      fillet_r = storage_wall_h; // Radius of the fillet
+      // Easy-Slide Retrieval Fillet (Concave Scoop)
+      fillet_r = storage_wall_h;
+      // Translate to the inner corner (0, wt, wt)
       translate([0, wall_thickness, wall_thickness])
-        rotate([0, 90, 0])
-          difference() {
-            // The filling block
-            cube([fillet_r, fillet_r, total_width]);
-            // The subtracted cylinder to create the curve
-            translate([fillet_r, fillet_r, -1])
-              cylinder(r=fillet_r, h=total_width + 2, $fn=64);
-          }
+        // Rotate so: local Z is Global X (width), local X is Global Y (depth), local Y is Global Z (height)
+        rotate([90, 0, 90])
+          linear_extrude(total_width)
+            polygon(
+              concat(
+                [[0, 0]],
+                [for (a = [0:5:90]) [fillet_r - fillet_r * cos(a), fillet_r - fillet_r * sin(a)]]
+              )
+            );
     }
 
     // 4. Solid Side Walls (Left and Right)

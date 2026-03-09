@@ -2,7 +2,11 @@
 
 All notable changes to the Bookmark Display project will be documented in this file.
 
-## [1.4.0] - 2026-03-09
+## [1.4.1] - 2026-03-09
+
+### Fixed (v1.4.1)
+
+- **Ergonomic Retrieval Fillet**: Corrected the orientation of the concave scoop in the storage tray.
 
 ### Added (v1.4.0)
 

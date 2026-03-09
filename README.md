@@ -67,9 +67,9 @@ Open [**`bookmark_lid.scad`**](./bookmark_lid.scad) to render and export the tel
 
 Unlike standard rectangular slots, this design uses a `hull()` between a flat surface and a central point to create a **drastic V-bottom**. This ensures that regardless of how thin or wide your bookmark is (relative to the slot width), gravity will naturally guide it to the dead center of the display block.
 
-### Retrieval Ramp (Ramp-to-Retrieval)
+### Retrieval Fillet (Ergonomic Scoop)
 
-The storage tray features a 45-degree ramp on the frontal wall. This is implemented via a `linear_extrude` of a triangle polygon. It transforms the storage bin from a simple "box" into an ergonomic tray where you can "roll" bookmarks up and out using a single finger.
+The storage tray features a smooth, concave **ergonomic fillet** on the frontal wall. This is implemented via a `difference()` between a corner block and a `cylinder`. It creates a seamless "scoop" shape that allows for an effortless flick to slide the bookmark up and out of the tray, while reclaiming space so bookmarks can sit flatter against the floor.
 
 ### Synchronized Telescoping Lid
 
