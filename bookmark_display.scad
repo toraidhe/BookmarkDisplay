@@ -12,6 +12,8 @@ bookmark_thickness = 1.6;
 number_of_slots = 3; // Reduced default to fit standard 3D print beds
 
 /* [Display Configuration] */
+// Width of the vertical display slot (snug fit)
+display_slot_width = 52.4;
 // Gap between categories
 slot_spacing = 2;
 // Degrees to lean the display bookmark back
@@ -27,7 +29,7 @@ storage_wall_h = 8;
 // Thickness of the wall/floor
 wall_thickness = 2.4;
 // Depth of the rear block holding the display bookmark
-display_block_depth = 20;
+display_block_depth = 26;
 // Height of the display block
 display_height = 36;
 
@@ -48,7 +50,7 @@ module slot_cutout(w, t, h) {
       // V-shaped bottom for self-centering
       hull() {
         translate([0, 0, 0]) cube([w, t, 0.1]);
-        translate([w/2, 0, -v_depth]) cube([0.1, t, 0.1]);
+        translate([w / 2, 0, -v_depth]) cube([0.1, t, 0.1]);
       }
     }
   }
@@ -74,12 +76,16 @@ module main_fixture() {
 
       // Display Slots
       for (i = [0:number_of_slots - 1]) {
-        x_pos = wall_thickness + i * slot_pitch;
+        x_base = wall_thickness + i * slot_pitch;
+        // Center the display slot within the compartment width
+        centering_offset = (bookmark_width - display_slot_width) / 2;
+        x_pos = x_base + centering_offset;
+
         y_pos = (display_block_depth / 2);
 
         translate([x_pos, total_depth - display_block_depth + y_pos, wall_thickness + 2])
           rotate([-tilt_angle, 0, 0])
-            slot_cutout(bookmark_width, bookmark_thickness, 210);
+            slot_cutout(display_slot_width, bookmark_thickness, 210);
       }
     }
 
@@ -95,7 +101,7 @@ module main_fixture() {
       translate([0, wall_thickness, wall_thickness])
         rotate([90, 0, 90])
           linear_extrude(total_width)
-            polygon([[0,0], [ramp_w, 0], [0, storage_wall_h]]);
+            polygon([[0, 0], [ramp_w, 0], [0, storage_wall_h]]);
     }
 
     // 4. Solid Side Walls (Left and Right)

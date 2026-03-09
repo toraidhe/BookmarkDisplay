@@ -31,8 +31,10 @@ Open [**`bookmark_display.scad`**](./bookmark_display.scad) in OpenSCAD. The fol
 | `bookmark_width` | 60mm | Width of the slot. Usually `real_width + 4mm`. |
 | `bookmark_height` | 220mm | Used for tray depth and lid height calculations. |
 | `bookmark_thickness` | 1.6mm | Slot width. Adjust for thick wooden or metal bookmarks. |
+| `display_slot_width` | 52.4mm | Narrower display slot width for a snugger, vertical fit. |
 | `number_of_slots` | 3 | How many bins/display slots side-by-side. |
 | `display_height` | 36mm | Height of the rear display block for bookmark support. |
+| `display_block_depth` | 26mm | Total depth of the rear block (insertion engagement). |
 | `slot_spacing` | 2mm | Gap between categories (controls divider thickness). |
 | `tilt_angle` | 15° | Angle at which the display bookmark leans back. |
 

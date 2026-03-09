@@ -2,7 +2,12 @@
 
 All notable changes to the Bookmark Display project will be documented in this file.
 
-## [1.2.0] - 2026-03-06
+## [1.3.0] - 2026-03-09
+
+### Added (v1.3.0)
+
+- **Decoupled Precision Slots**: Introduced `display_slot_width` (52.4mm) to allow a snugger fit for bookmarks without changing the overall tray width (60mm).
+- **Deep-Fit Support**: Increased `display_block_depth` to **26mm** to provide more engagement and prevent vertical lean.
 
 ### Added (v1.2.0)
 
