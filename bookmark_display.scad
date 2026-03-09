@@ -94,16 +94,22 @@ module main_fixture() {
     // 2. The front storage floor (Flat)
     cube([total_width, total_depth - display_block_depth, wall_thickness]);
 
-    // 3. Front retaining wall with retrieval fillet
+    // 3. Front retaining wall with ergonomic retrieval fillet
     union() {
       // Main vertical wall
       cube([total_width, wall_thickness, storage_wall_h + wall_thickness]);
-      // Easy-Slide Retrieval Ramp
-      ramp_w = storage_wall_h; // Width of the ramp base
+
+      // Easy-Slide Retrieval Fillet (Concave Curve)
+      fillet_r = storage_wall_h; // Radius of the fillet
       translate([0, wall_thickness, wall_thickness])
-        rotate([90, 0, 90])
-          linear_extrude(total_width)
-            polygon([[0, 0], [ramp_w, 0], [0, storage_wall_h]]);
+        rotate([0, 90, 0])
+          difference() {
+            // The filling block
+            cube([fillet_r, fillet_r, total_width]);
+            // The subtracted cylinder to create the curve
+            translate([fillet_r, fillet_r, -1])
+              cylinder(r=fillet_r, h=total_width + 2, $fn=64);
+          }
     }
 
     // 4. Solid Side Walls (Left and Right)

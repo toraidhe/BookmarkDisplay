@@ -5,7 +5,7 @@ A parametric OpenSCAD project for displaying and storing bookmarks. This system 
 ## 🚀 Key Features
 
 - **Enhanced Display Stability**: Display height adjusted to **36mm** with internal **V-shaped centering slots** for perfect bookmark alignment.
-- **Easy-Slide Retrieval**: Built-in retrieval ramp in the storage tray floor for effortless bookmark removal.
+- **Ergonomic Retrieval Fillet**: Smooth concave profile in the storage tray floor for effortless bookmark removal and flatter seating.
 - **Parametric Synchronization**: All components (Base, Lid, and Test Utility) share a single source of truth for dimensions.
 - **Aesthetic "Block" Design**: When the lid is closed, the unit forms a clean, rectangular cube that hides the internal sloped geometry.
 - **Anti-Rattle Dividers**: The lid includes internal spacers that match the box slope to keep bookmarks secure during transport.

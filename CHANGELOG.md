@@ -2,7 +2,11 @@
 
 All notable changes to the Bookmark Display project will be documented in this file.
 
-## [1.3.2] - 2026-03-09
+## [1.4.0] - 2026-03-09
+
+### Added (v1.4.0)
+
+- **Ergonomic Retrieval Fillet**: Replaced the linear "Easy-Slide" chamfer with a smooth concave fillet in the storage tray. This allows bookmarks to sit flatter while providing a natural curved path for finger-based retrieval.
 
 ### Changed (v1.3.2)
 
