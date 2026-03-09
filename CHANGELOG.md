@@ -2,7 +2,11 @@
 
 All notable changes to the Bookmark Display project will be documented in this file.
 
-## [1.3.1] - 2026-03-09
+## [1.3.2] - 2026-03-09
+
+### Changed (v1.3.2)
+
+- **Shallower Slot Depth**: Adjusted the Z-start of the display slot to **16mm**, resulting in a 20mm total depth from the top of the block.
 
 ### Changed (v1.3.1)
 
