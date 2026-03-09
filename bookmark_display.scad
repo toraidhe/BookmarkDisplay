@@ -83,7 +83,9 @@ module main_fixture() {
 
         y_pos = (display_block_depth / 2);
 
-        translate([x_pos, total_depth - display_block_depth + y_pos, wall_thickness + 2])
+        // Top of V-shape starts 24mm from top of 36mm block -> Z=12
+        // Internal slot_cutout has a -1 translation, so we translate to 13
+        translate([x_pos, total_depth - display_block_depth + y_pos, 13])
           rotate([-tilt_angle, 0, 0])
             slot_cutout(display_slot_width, bookmark_thickness, 210);
       }

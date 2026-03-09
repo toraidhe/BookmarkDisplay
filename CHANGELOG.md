@@ -2,7 +2,11 @@
 
 All notable changes to the Bookmark Display project will be documented in this file.
 
-## [1.3.0] - 2026-03-09
+## [1.3.1] - 2026-03-09
+
+### Changed (v1.3.1)
+
+- **Precision Slot Depth**: Adjusted the Z-depth of the display slots to exactly **24mm** from the top of the 36mm block. This ensures the V-bottom starts precisely and does not penetrate too deep into the floor.
 
 ### Added (v1.3.0)
 
